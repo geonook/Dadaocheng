@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dadaocheng Search Area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [121.5050, 25.0500],
+            [121.5150, 25.0500],
+            [121.5150, 25.0600],
+            [121.5050, 25.0600],
+            [121.5050, 25.0500]
+          ]
+        ]
+      }
+    }
+  ]
+}
