@@ -1,0 +1,40 @@
+# Zeabur 部署配置
+name: dadaocheng-project
+
+services:
+  # 後端服務
+  backend:
+    name: dadaocheng-backend
+    type: nodejs
+    context: ./server
+    build:
+      commands:
+        - npm install --production
+        - npm run build:migrate
+    start: npm start
+    env:
+      NODE_ENV: production
+      PORT: ${{ PORT }}
+      DATABASE_URL: ${{ DATABASE_URL }}
+      JWT_SECRET: ${{ JWT_SECRET }}
+      FRONTEND_URL: ${{ FRONTEND_URL }}
+      ADMIN_PASSWORD: ${{ ADMIN_PASSWORD }}
+      MAX_FILE_SIZE: 104857600
+      ALLOWED_FILE_TYPES: jpg,jpeg,png,gif,mp4,mov,avi,pdf,doc,docx,ppt,pptx
+      ADMIN_USERNAME: admin
+      ADMIN_EMAIL: tsehungchen@kcislk.ntpc.edu.tw
+    
+  # 前端服務  
+  frontend:
+    name: dadaocheng-frontend
+    type: static
+    context: ./
+    build:
+      commands:
+        - npm install
+        - npm run build
+    outputDir: dist
+    env:
+      VITE_API_BASE_URL: ${{ BACKEND_URL }}
+      VITE_APP_TITLE: 大稻埕探索專案
+      VITE_APP_VERSION: 1.0.0

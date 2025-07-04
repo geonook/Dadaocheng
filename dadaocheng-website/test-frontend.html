@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>組別下拉選單測試</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        select { padding: 8px; margin: 10px 0; width: 200px; }
+        button { padding: 8px 16px; margin: 10px 0; cursor: pointer; }
+        #response { background-color: #f8f9fa; padding: 10px; border: 1px solid #e9ecef; border-radius: 4px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>組別下拉選單測試</h1>
+    
+    <div id="status" class="test-result">正在測試...</div>
+    
+    <h2>API 測試</h2>
+    <button onclick="testAPI()">測試 API 連接</button>
+    <div id="response"></div>
+    
+    <h2>組別選擇測試</h2>
+    <select id="groupSelect">
+        <option value="">載入中...</option>
+    </select>
+    <p>已選組別：<span id="selectedGroup">未選擇</span></p>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:5001';
+        
+        async function testAPI() {
+            const responseDiv = document.getElementById('response');
+            responseDiv.textContent = '正在測試 API...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/groups/available`);
+                const data = await response.json();
+                
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+                
+                if (data.success && Array.isArray(data.data)) {
+                    populateGroupSelect(data.data);
+                    updateStatus('success', 'API 測試成功！');
+                } else {
+                    updateStatus('error', 'API 返回格式錯誤');
+                }
+            } catch (error) {
+                responseDiv.textContent = `錯誤: ${error.message}`;
+                updateStatus('error', `API 測試失敗: ${error.message}`);
+            }
+        }
+        
+        function populateGroupSelect(groups) {
+            const select = document.getElementById('groupSelect');
+            select.innerHTML = '<option value="">請選擇組別</option>';
+            
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.value.toString();
+                option.textContent = group.label.zh;
+                select.appendChild(option);
+            });
+            
+            // 添加選擇事件監聽器
+            select.addEventListener('change', function() {
+                const selectedGroup = document.getElementById('selectedGroup');
+                if (this.value) {
+                    selectedGroup.textContent = `第${this.value}組`;
+                    updateStatus('success', `成功選擇：第${this.value}組`);
+                } else {
+                    selectedGroup.textContent = '未選擇';
+                }
+            });
+        }
+        
+        function updateStatus(type, message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `test-result ${type}`;
+            statusDiv.textContent = message;
+        }
+        
+        // 頁面載入時自動測試
+        window.addEventListener('load', testAPI);
+    </script>
+</body>
+</html>

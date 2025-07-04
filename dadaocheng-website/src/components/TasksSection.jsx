@@ -1,36 +1,40 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Map, Search, Video, Users, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../data/translations';
+import { useScrollToSection } from '../hooks/useScrollToSection';
+// import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 const TasksSection = () => {
   const { language } = useLanguage();
   const t = translations[language];
+  const scrollToSection = useScrollToSection();
+  // const [ref, isVisible] = useIntersectionObserver({
+  //   threshold: 0.2,
+  //   rootMargin: '0px 0px -100px 0px'
+  // });
 
-  const taskIcons = {
+  const taskIcons = useMemo(() => ({
     task1: BookOpen,
     task2: Map,
     task3: Search,
     task4: Video,
     task5: Users
-  };
+  }), []);
 
-  const taskColors = {
+  const taskColors = useMemo(() => ({
     task1: 'bg-blue-500',
     task2: 'bg-green-500',
     task3: 'bg-purple-500',
     task4: 'bg-red-500',
     task5: 'bg-orange-500'
-  };
+  }), []);
 
-  const scrollToUpload = () => {
-    const element = document.querySelector('#upload');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const scrollToUpload = useCallback(() => {
+    scrollToSection('#upload');
+  }, [scrollToSection]);
 
   return (
     <section id="tasks" className="py-20 bg-white">
@@ -48,7 +52,7 @@ const TasksSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {Object.keys(t.tasks).filter(key => key.startsWith('task')).map((taskKey, index) => {
+          {Object.keys(t.tasks).filter(key => key.startsWith('task')).map((taskKey) => {
             const task = t.tasks[taskKey];
             const IconComponent = taskIcons[taskKey];
             const colorClass = taskColors[taskKey];

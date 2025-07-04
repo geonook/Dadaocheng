@@ -64,8 +64,8 @@ const Footer = () => {
               {language === 'zh' ? '聯絡資訊' : 'Contact Information'}
             </h3>
             <div className="space-y-2 text-gray-300">
-              <p>{language === 'zh' ? '電話：(02) 2603-0588' : 'Phone: (02) 2603-0588'}</p>
-              <p>{language === 'zh' ? '信箱：info@kcis.ntpc.edu.tw' : 'Email: info@kcis.ntpc.edu.tw'}</p>
+              <p>{t.contact.phone}</p>
+              <p>{t.contact.email}</p>
             </div>
           </div>
         </div>

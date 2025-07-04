@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Target, Users, Clock, Share2, MapPin, Phone, Mail, Building } from 'lucide-react';
+import { Target, Users, Clock, Share2, MapPin, Phone, Mail, Building, AlertTriangle, FileText } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../data/translations';
 import outdoorEducation from '../assets/outdoor-education.png';
-import teachersLearning from '../assets/teachers-learning.jpg';
+// import teachersLearning from '../assets/teachers-learning.jpg';
 import dadaochengBuildings from '../assets/dadaocheng-buildings.jpg';
 
 export const PurposeSection = () => {
@@ -67,6 +67,12 @@ export const InstructionsSection = () => {
       color: 'bg-purple-500'
     },
     {
+      icon: FileText,
+      title: t.instructions.documentation,
+      description: t.instructions.documentationDesc,
+      color: 'bg-indigo-500'
+    },
+    {
       icon: Share2,
       title: t.instructions.sharing,
       description: t.instructions.sharingDesc,
@@ -83,7 +89,7 @@ export const InstructionsSection = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {instructions.map((instruction, index) => {
             const IconComponent = instruction.icon;
             return (
@@ -106,16 +112,6 @@ export const InstructionsSection = () => {
           })}
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-yellow-800 mb-3">
-            {language === 'zh' ? '行前注意事項' : 'Pre-Activity Reminders'}
-          </h3>
-          <ul className="space-y-2 text-yellow-700">
-            <li>• {language === 'zh' ? '請務必攜帶防曬用品（例如帽子、防曬乳）' : 'Be sure to bring sun protection (e.g., hats, sunscreen)'}</li>
-            <li>• {language === 'zh' ? '請穿著輕便舒適的衣物與鞋子' : 'Wear light, comfortable clothes and shoes'}</li>
-            <li>• {language === 'zh' ? '請隨時注意個人安全與組員狀況' : 'Stay aware of personal safety and teammates\' well-being at all times'}</li>
-          </ul>
-        </div>
       </div>
     </section>
   );
@@ -134,20 +130,29 @@ export const AboutSection = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              {t.about.history}
-            </h3>
-            <p className="text-gray-700 leading-relaxed mb-6">
-              {t.about.historyContent}
-            </p>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              {t.about.culture}
-            </h3>
-            <p className="text-gray-700 leading-relaxed">
-              {t.about.cultureContent}
-            </p>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center">
+                  <Building className="h-6 w-6 mr-2 text-blue-600" />
+                  {t.about.history}
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  {t.about.historyContent}
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center">
+                  <Target className="h-6 w-6 mr-2 text-green-600" />
+                  {t.about.culture}
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  {t.about.cultureContent}
+                </p>
+              </div>
+            </div>
           </div>
           <div className="relative">
             <img
@@ -155,7 +160,23 @@ export const AboutSection = () => {
               alt="Dadaocheng Buildings"
               className="rounded-lg shadow-lg w-full"
             />
+            <div className="absolute inset-0 bg-blue-600/10 rounded-lg"></div>
           </div>
+        </div>
+
+        {/* 教育價值區塊 */}
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-8 border border-green-200">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-full mb-4">
+              <Target className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              {t.about.education}
+            </h3>
+          </div>
+          <p className="text-lg text-gray-700 leading-relaxed text-center max-w-4xl mx-auto">
+            {t.about.educationContent}
+          </p>
         </div>
       </div>
     </section>
